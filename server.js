@@ -2,10 +2,8 @@ const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
 
-// heroku sets 'PORT' environment variable, which is not present on local machine
-const port = process.env.PORT || 3000;
-
 var app = express();
+
 
 hbs.registerPartials(__dirname + '/views/partials');
 hbs.registerHelper('getCurrentYear', () => new Date().getFullYear());
@@ -62,6 +60,6 @@ app.get('/json', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`Server is started on port ${port}..`);
+app.listen(3000, () => {
+    console.log('Server is started on port 3000..');
 });
