@@ -10,8 +10,11 @@
   "author": "Bhushan Malgaonkar",
   "license": "ISC",
   "devDependencies": {
+    "babel-jest": "^23.6.0",
     "expect": "^23.6.0",
+    "jest": "^23.6.0",
     "mocha": "^5.2.0",
+    "rewire": "^4.0.1",
     "supertest": "^3.3.0"
   },
   "dependencies": {
