@@ -10,5 +10,5 @@ module.exports.setName = (user, fullName) => {
 module.exports.asyncAdd = (a, b, callback) => {
     setTimeout(() => {
         callback(a + b);
-    }, 100);
+    }, 1000);
 };
