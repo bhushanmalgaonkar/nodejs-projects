@@ -7,7 +7,7 @@ const {User} = require('./models/user');
 
 var app = express();
 
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 app.post('/todos', (req, res) => {
     var todo = new Todo({
@@ -21,6 +21,22 @@ app.post('/todos', (req, res) => {
     });
 })
 
+app.get('/todos', (req, res) => {
+    Todo.find().then((todos) => {
+        // res.send(todos);
+        // sending response directly as an array would make futures modifications difficult. 
+        // e.g. if we have to add more data to response
+        // better way is to return an object with todos as property
+        res.send({todos});
+    }, (err) => {
+        res.status(400).send(err);
+    });
+});
+
 app.listen(3000, () => {  
     console.log('Listening on port 3000...');
 });
+
+module.exports = {
+    app
+}
