@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const {ObjectID} = require('mongodb');
 
 const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
@@ -29,6 +30,20 @@ app.get('/todos', (req, res) => {
         // better way is to return an object with todos as property
         res.send({todos});
     }, (err) => {
+        res.status(400).send(err);
+    });
+});
+
+app.get('/todos/:id', (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(404).send('Couldn\'t find note');
+    
+    Todo.findOne({_id: req.params.id}).then((todo) => {
+        if (!todo)
+            res.status(404).send('Couldn\'t find note');
+        
+        res.send({todo});
+    }).catch((err) => {
         res.status(400).send(err);
     });
 });
