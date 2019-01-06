@@ -1,13 +1,14 @@
 const expect = require('expect')
 const request = require('supertest');
+const {ObjectID} = require('mongodb');
 
 const {app} = require('../server');
 const {Todo} = require('../models/todo');
 
 var dummyData = [
-    { text: 'pet the cat' },
-    { text: 'walk the dog' },
-    { text: 'eat dinner' }
+    { _id: new ObjectID(), text: 'pet the cat' },
+    { _id: new ObjectID(), text: 'walk the dog' },
+    { _id: new ObjectID(), text: 'eat dinner' }
 ]
 
 beforeEach((done) => {
@@ -81,6 +82,34 @@ describe('GET /todos', () => {
             .expect((res) => {
                 expect(res.body.todos.length).toBe(dummyData.length);
             })
+            .end(done);
+    });
+});
+
+describe('GET /todos/:id', () => { 
+    it('should return note when valid id is passed', (done) => {
+        var note = dummyData[0];
+        request(app)
+            .get(`/todos/${note._id.toHexString()}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.todo._id).toBe(note._id.toHexString());
+                expect(res.body.todo.text).toBe(note.text);
+            })
+            .end(done);
+    });
+
+    it('should return 404 for valid object id that does not exists in database', (done) => {
+        request(app)
+            .get(`/todos/${new ObjectID().toHexString()}`)
+            .expect(404)
+            .end(done);
+    });
+
+    it('should return 404 for invalid object id', (done) => {
+        request(app)
+            .get(`/todos/aabbccddeeffgghhiijj`)
+            .expect(404)
             .end(done);
     });
 });
