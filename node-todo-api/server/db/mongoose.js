@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const databseURI = 'mongodb://localhost/'
-const dbName = 'TodoApp'
+const databseURI = process.env.MONGODB_URI || 'mongodb://localhost/';
+const dbName = 'TodoApp';
 
 // tell mongoose which Promise library to use
 mongoose.Promise = global.Promise;
