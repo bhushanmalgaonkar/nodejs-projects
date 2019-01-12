@@ -9,6 +9,11 @@ const {User} = require('./models/user');
 var app = express();
 const port = process.env.PORT || 3000;
 
+process.on('unhandledRejection', (reason, p) => {
+    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    // application specific logging, throwing an error, or other logic here
+});
+
 app.use(bodyParser.json());
 
 app.post('/todos', (req, res) => {
