@@ -66,10 +66,37 @@ app.delete('/todos/:id', (req, res) => {
         res.send({todo});
     }, (err) => {
         res.status(400).send(err);
-    })
-})
+    });
+});
 
-app.listen(port, () => {  
+app.patch('/todos/:id', (req, res) => {
+    var id = req.params.id;
+
+    if (!ObjectID.isValid(id))
+        return res.status(404).send();
+
+    // we only want to update certain properties
+    // not ones not-specified in model or fields such as completedAt
+    var body = _.pick(req.body, ['text', 'completed']);
+
+    if (_.isBoolean(body.completed) && body.completed) {
+        body.completedAt = new Date().getTime();
+    } else {
+        body.completed = false;
+        body.completedAt = null;
+    }
+
+    Todo.findOneAndUpdate(id, { $set: body }, { new: true }).then((todo) => {
+        if (!todo)
+            return res.status(404).send();
+        
+        res.send({todo});
+    }).catch((err) => {
+        res.status(404).send();
+    });
+});
+
+app.listen(port, () => {
     console.log(`Listening on port ${port}...`);
 });
 
