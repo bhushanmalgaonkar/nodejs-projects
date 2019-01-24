@@ -33,9 +33,14 @@ A REST API written in **ExpressJS/MongoDB** for todo list application
    
    This endpoint can be used to mark any todo as completed or not completed. In such case, the value of completedAt is set to current time stamp or is cleared out.  
    
+   
 ## How to run
 
 1. git clone git@github.com:bhushanmalgaonkar/nodejs-projects.git
 2. cd nodejs-projects/node-todo-api/
 3. npm install
 4. npm start
+
+## Testing using mocha, supertest
+
+/server/tests/server.test.js contains multiple test for each of the above route. These tests can be run using command **npm test**
